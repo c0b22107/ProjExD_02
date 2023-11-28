@@ -21,6 +21,8 @@ def main():
     bb_rct.centerx = random.randint(0,WIDTH)
     bb_rct.centery = random.randint(0,HEIGHT)
 
+    vx, vy = +5, +5
+
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -30,6 +32,8 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, [900, 400])
+
+        bb_rct.move_ip(vx,vy)#爆弾移動
 
         screen.blit(bb_img,bb_rct)
 
