@@ -13,6 +13,7 @@ delta = {  # 練習３：押下キーと移動量の辞書
 }
 
 
+
 def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     """
     オブジェクトが画面内or画面外を判定し，真理値タプルを返す関数
@@ -44,8 +45,21 @@ def main():
     bb_rct.centery = random.randint(0, HEIGHT)
     vx, vy = +5, +5  # 練習２：爆弾の速度
 
+    kk_imgs = {
+        (-5,0):  pg.image.load("ex02/fig/3.png"),
+        (5,0): pg.transform.flip(kk_img, True, False) , #右
+        (5,-5): pg.transform.flip( pg.transform.rotozoom(kk_img, -45, 1.0), True, False),#右上
+        (0,-5): pg.transform.flip( pg.transform.rotozoom(kk_img, -90, 1.0), True, False),#上
+        (5,5): pg.transform.flip( pg.transform.rotozoom(kk_img, 45, 1.0), True, False),#右下
+        (0,5): pg.transform.flip( pg.transform.rotozoom(kk_img, 90, 1.0), True, False),#下
+        (-5,-5): pg.transform.rotozoom(kk_img, -45, 1.0),#左上
+        (-5,5): pg.transform.rotozoom(kk_img, 45, 1.0),#左下
+    }
+
+
     clock = pg.time.Clock()
     tmr = 0
+    k = 0
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
@@ -56,12 +70,14 @@ def main():
             return
             
         key_lst = pg.key.get_pressed()
-        sum_mv = [0, 0]
+        sum_mv = [0, 0]#移動量の合計
         for k, tpl in delta.items():
             if key_lst[k]:  # キーが押されたら
                 sum_mv[0] += tpl[0]
                 sum_mv[1] += tpl[1]
-        
+
+        if tuple(sum_mv) in kk_imgs.keys():
+            kk_img = kk_imgs[tuple(sum_mv)]
 
         screen.blit(bg_img, [0, 0])
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
