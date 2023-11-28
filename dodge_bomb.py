@@ -2,7 +2,6 @@ import random
 import sys
 import pygame as pg
 
-
 WIDTH, HEIGHT = 1600, 900
 
 delta = {  # 練習３：押下キーと移動量の辞書
@@ -11,8 +10,6 @@ delta = {  # 練習３：押下キーと移動量の辞書
     pg.K_LEFT: (-5, 0),
     pg.K_RIGHT: (+5, 0)
 }
-
-
 
 def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     """
@@ -26,8 +23,6 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     if rct.top < 0 or HEIGHT < rct.bottom:  # 縦方向はみ出し判定
         tate = False
     return yoko, tate
-
-
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -55,10 +50,10 @@ def main():
         (-5,5): pg.transform.rotozoom(kk_img, 45, 1.0),#左下
     }
 
-
     clock = pg.time.Clock()
     tmr = 0
     k = 0
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
@@ -66,7 +61,6 @@ def main():
         
         if kk_rct.colliderect(bb_rct):
             kk_img = pg.image.load("ex02/fig/4.png")
-            delay = 2
             print("Game Over")
             return
             
@@ -84,6 +78,7 @@ def main():
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+
         screen.blit(kk_img, kk_rct)  # 練習３：こうかとんを移動させる
         bb_rct.move_ip(vx, vy)  # 練習２：爆弾を移動させる
         yoko, tate = check_bound(bb_rct)
@@ -91,12 +86,12 @@ def main():
             vx *= -1
         if not tate:  # 縦方向にはみ出たら
             vy *= -1
+
         bb_rct.move_ip(vx, vy) 
         screen.blit(bb_img, bb_rct)
         pg.display.update()
         tmr += 1
         clock.tick(50)
-
 
 if __name__ == "__main__":
     pg.init()
